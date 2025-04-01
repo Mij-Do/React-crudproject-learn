@@ -29,7 +29,7 @@ const CardProducts = ({ }: IProps) => {
                 />
             </div>
             <div className="flex justify-between items-center space-x-2 text-white mt-2">
-                <Button className="bg-indigo-500 hover:bg-indigo-700">Edit</Button>
+                <Button className="bg-indigo-500 hover:bg-indigo-700" onClick={() => console.log('clicked!')}>Edit</Button>
                 <Button className="bg-red-500 hover:bg-red-700">Destroy</Button>
             </div>
         </div>
