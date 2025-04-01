@@ -1,4 +1,5 @@
 import Image from "./Image";
+import Button from "./ui/Button";
 interface IProps {
 
 }
@@ -28,8 +29,8 @@ const CardProducts = ({ }: IProps) => {
                 />
             </div>
             <div className="flex justify-between items-center space-x-2 text-white mt-2">
-                <button className="bg-indigo-500 p-2 w-full rounded-md cursor-pointer hover:bg-indigo-700 transition">Edit</button>
-                <button className="bg-red-500 p-2 w-full rounded-md cursor-pointer hover:bg-red-700 transition">Destroy</button>
+                <Button className="bg-indigo-500 hover:bg-indigo-700">Edit</Button>
+                <Button className="bg-red-500 hover:bg-red-700">Destroy</Button>
             </div>
         </div>
     )
