@@ -8,7 +8,7 @@ interface IProps {
 
 const CardProducts = ({ product }: IProps) => {
     return (
-        <div className="border rounded-md p-2">
+        <div className="border rounded-md p-2 mx-auto max-w-sm md:max-w-lg md:mx-0 flex flex-col justify-between">
             <Image imageURL={product.image}
             altImage={product.title}
             className="rounded-md w-20"
