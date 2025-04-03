@@ -23,7 +23,7 @@ const CardProducts = ({ product }: IProps) => {
                 <span className="w-5 h-5 rounded-full bg-black cursor-pointer"></span>
             </div>
             <div className="flex justify-between items-center">
-                <span className="text-indigo-600">$500,000</span>
+                <span className="text-indigo-600">${product.price}</span>
                 <Image imageURL={product.image}
                 altImage={product.title}
                 className="w-10 h-10 rounded-full object-bottom"

@@ -25,7 +25,7 @@ function App() {
       <label htmlFor={input.id}>{input.label}</label>
       <Input type="text" id={input.id} name={input.name} />
     </div>
-  )
+  );
   return (
       <main className="container mx-auto">
         <Button width="w-full" className="bg-indigo-400 hover:bg-indigo-600 text-white" onClick={open}>
@@ -35,13 +35,15 @@ function App() {
           {renderProduct}
         </div>
         <Modal isOpen={isOpen} closeModal={close} title="Add Product">
-          <div className="m-2">
-            {renderFormListModal}
-          </div>
-          <div className="flex items-center space-x-2 text-white">
-            <Button width="w-full" className="bg-indigo-400 hover:bg-indigo-600">Submit</Button>
-            <Button width="w-full" className="bg-red-300 hover:bg-red-500">Cancel</Button>
-          </div>
+          <form>
+            <div className="m-2">
+              {renderFormListModal}
+            </div>
+            <div className="flex items-center space-x-2 text-white">
+              <Button width="w-full" className="bg-indigo-400 hover:bg-indigo-600">Submit</Button>
+              <Button width="w-full" className="bg-red-300 hover:bg-red-500">Cancel</Button>
+            </div>
+          </form>
         </Modal>
       </main>
   )
