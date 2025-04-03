@@ -10,3 +10,10 @@ export interface Iproduct {
         count: number;
     };
 }
+
+export interface IformList {
+    id: string;
+    name: string;
+    label: string;
+    type: string;
+}
