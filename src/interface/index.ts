@@ -1,19 +1,19 @@
 export interface Iproduct {
-    id: number;
+    id: string | undefined;
     title: string;
-    price: number;
+    price: string;
     description: string;
     category: string;
     image: string;
     rating: {
-        rate: number;
-        count: number;
+        rate: string;
+        count: string;
     };
 }
 
 export interface IformList {
     id: string;
-    name: string;
+    name: 'title' | 'price' | 'description' | 'image';
     label: string;
     type: string;
 }
