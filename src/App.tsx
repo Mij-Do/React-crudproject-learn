@@ -7,6 +7,7 @@ import { formInputList } from "./data"
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { Iproduct } from "./interface"
 import { productValidation } from "./validation"
+import {v4 as uuid} from "uuid";
 import ErrorsMsg from "./components/ErrorsMsg"
 import CircleColor from "./components/CircleColor"
 
@@ -19,6 +20,7 @@ function App() {
     description: '',
     imageURL: '',
     category: '',
+    colors: [],
     rating: {
         rate: '',
         count: '',
@@ -28,6 +30,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [errors, setErrors] = useState({title: '', price: '', description: '', imageURL: '',});
   const [tempColor, setTempColor] = useState<string[]>([]);
+  const [products, setProducts] = useState<Iproduct[]>(productsList);
   const [product, setProduct] = useState<Iproduct>(defaultProduct);
   // handelers
   const open = () => setIsOpen(true);
@@ -60,7 +63,10 @@ function App() {
       setErrors(errors);
       return;
     }
-    console.log('send this to backend!');
+    setProducts(prev => [{...product, id: uuid(), colors: tempColor}, ...prev]);
+    setProduct(defaultProduct);
+    setTempColor([]);
+    close();
   }
 
   const onCancel = () => {
@@ -68,7 +74,7 @@ function App() {
     close();
   }
   // render
-  const renderProduct = productsList.map(product => <CardProducts key={product.id} product={product}/>)
+  const renderProduct = products.map(product => <CardProducts key={product.id} product={product}/>)
   const renderFormListModal = formInputList.map(input => 
     <div className="flex flex-col text-indigo-500" key={input.id}>
       <label htmlFor={input.id}>{input.label}</label>
@@ -117,3 +123,4 @@ function App() {
 }
 
 export default App
+

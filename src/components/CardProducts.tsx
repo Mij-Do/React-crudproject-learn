@@ -1,5 +1,6 @@
 import { Iproduct } from "../interface";
 import { txtSlices } from "../utils/functions";
+import CircleColor from "./CircleColor";
 import Image from "./Image";
 import Button from "./ui/Button";
 interface IProps {
@@ -7,25 +8,30 @@ interface IProps {
 }
 
 const CardProducts = ({ product }: IProps) => {
+        const {colors, description, imageURL, price, title} = product;
+
+        const renderColorCircle = colors.map(color => 
+            <CircleColor 
+                key={color} 
+                color={color}
+            />);
     return (
         <div className="border rounded-md p-2 mx-auto max-w-sm md:max-w-lg md:mx-0 flex flex-col justify-between">
-            <Image imageURL={product.imageURL}
-            altImage={product.title}
-            className="rounded-md w-20"
+            <Image imageURL={imageURL}
+                altImage={title}
+                className="rounded-md w-20"
             />
-            <h3 className="my-2 uppercase">{product.title}</h3>
+            <h3 className="my-2 uppercase">{title}</h3>
             <p className="capitalize">
-                {txtSlices(product.description)}
+                {txtSlices(description)}
             </p>
             <div className="flex space-x-2 my-2">
-                <span className="w-5 h-5 rounded-full bg-indigo-500 cursor-pointer"></span>
-                <span className="w-5 h-5 rounded-full bg-red-500 cursor-pointer"></span>
-                <span className="w-5 h-5 rounded-full bg-black cursor-pointer"></span>
+                {renderColorCircle}
             </div>
             <div className="flex justify-between items-center">
-                <span className="text-indigo-600">${product.price}</span>
-                <Image imageURL={product.imageURL}
-                altImage={product.title}
+                <span className="text-indigo-600">${price}</span>
+                <Image imageURL={imageURL}
+                altImage={title}
                 className="w-10 h-10 rounded-full object-bottom"
                 />
             </div>

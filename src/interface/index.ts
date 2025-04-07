@@ -5,6 +5,7 @@ export interface Iproduct {
     description: string;
     imageURL: string;
     category: string;
+    colors: string[];
     rating: {
         rate: string;
         count: string;
