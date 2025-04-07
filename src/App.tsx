@@ -10,6 +10,7 @@ import { productValidation } from "./validation"
 import {v4 as uuid} from "uuid";
 import ErrorsMsg from "./components/ErrorsMsg"
 import CircleColor from "./components/CircleColor"
+import SelectItem from "./components/ui/SelectItem"
 
 
 function App() {
@@ -19,7 +20,10 @@ function App() {
     price: '',
     description: '',
     imageURL: '',
-    category: '',
+    category: {
+      name: '',
+      imageURL: '',
+    },
     colors: [],
     rating: {
         rate: '',
@@ -111,6 +115,9 @@ function App() {
             </div>
             <div className="my-2 flex flex-wrap">
               {tempColor.map(color => <span key={color} className="text-white rounded-md p-1 ml-1 text-sm" style={{backgroundColor: color}}>{color}</span>)}
+            </div>
+            <div className="my-2"> 
+              <SelectItem />  
             </div>
             <div className="flex items-center space-x-2 text-white">
               <Button width="w-full" className="bg-indigo-400 hover:bg-indigo-600">Submit</Button>

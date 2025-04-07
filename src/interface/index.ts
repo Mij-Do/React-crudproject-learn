@@ -4,7 +4,10 @@ export interface Iproduct {
     price: string;
     description: string;
     imageURL: string;
-    category: string;
+    category: {
+        name: string,
+        imageURL: string,
+    };
     colors: string[];
     rating: {
         rate: string;
@@ -17,4 +20,17 @@ export interface IformList {
     name: 'title' | 'price' | 'description' | 'imageURL';
     label: string;
     type: string;
+}
+
+export interface ICategory {
+    id: string;
+    name: string;
+    imageURL: string;
+}
+
+export interface OptionType {
+    id: string;
+    value: string;
+    label: string;
+    imageURL: string;
 }
