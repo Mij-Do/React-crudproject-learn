@@ -36,9 +36,10 @@ function App() {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [errors, setErrors] = useState({title: '', price: '', description: '', imageURL: '',});
   const [tempColor, setTempColor] = useState<string[]>([]);
-  const [products, setProducts] = useState<Iproduct[]>(productsList);
+  const [ products, setProducts] = useState<Iproduct[]>(productsList);
   const [product, setProduct] = useState<Iproduct>(defaultProduct);
   const [editProduct, setEditProduct] = useState<Iproduct>(defaultProduct);
+  const [editProductIdx, setEditProductIdx] = useState<number>(0);
   const [selected, setSelected] = useState<OptionType>({
           id: categories[0].id,
           value: categories[0].id, 
@@ -75,11 +76,12 @@ function App() {
 
   const onSubmitHandeler = (event: FormEvent<HTMLFormElement>): void =>  {
     event.preventDefault();
+    const {title, description, price, imageURL} = product;
     const errors = productValidation({
-      title: product.title,
-      price: product.price,
-      description: product.description,
-      imageURL: product.imageURL,
+      title,
+      price,
+      description,
+      imageURL,
     })
     
 
@@ -95,27 +97,34 @@ function App() {
     setTempColor([]);
     close();
   }
+  
   const onSubmitEditHandeler = (event: FormEvent<HTMLFormElement>): void =>  {
     event.preventDefault();
+    const {title, description, price, imageURL} = editProduct;
     const errors = productValidation({
-      title: product.title,
-      price: product.price,
-      description: product.description,
-      imageURL: product.imageURL,
+      title,
+      price,
+      description,
+      imageURL,
     })
     
 
-    const hasErrorMsg = Object.values(errors).some(value => value === '') && 
-                        Object.values(errors).every(value => value === '');
+    const hasErrorMsg = Object.values(errors).some(value => value === '');
     if (!hasErrorMsg) {
       setErrors(errors);
       return;
     }
+    
+    console.log(product)
+    console.log(editProduct)
 
-    setProducts(prev => [{...product, id: uuid(), colors: tempColor, category: selected}, ...prev]);
-    setProduct(defaultProduct);
+    const updateProduct = [...products];
+    updateProduct[editProductIdx] = editProduct;
+    setProducts(updateProduct);
+    
+    setEditProduct(defaultProduct);
     setTempColor([]);
-    close();
+    closeEdit();
   }
 
   const onCancel = () => {
@@ -123,7 +132,8 @@ function App() {
     close();
   }
   // render
-  const renderProduct = products.map(product => <CardProducts key={product.id} product={product} setEditProduct={setEditProduct} openEdit={openEdit}/>)
+  const renderProduct = products.map((product, idx) => 
+    <CardProducts key={product.id} product={product} idx={idx} setEditProduct={setEditProduct} openEdit={openEdit} setEditProductIdx={setEditProductIdx}/>);
   const renderFormListModal = formInputList.map(input => 
     <div className="flex flex-col text-indigo-500" key={input.id}>
       <label htmlFor={input.id}>{input.label}</label>
@@ -147,6 +157,7 @@ function App() {
           <div className="flex flex-col text-indigo-500 mb-1">
             <label htmlFor={id}>{label}</label>
             <Input type="text" id={id} name={name} value={editProduct[name]} onChange={onChangeEditHandeler} />
+            <ErrorsMsg msg={''} />
           </div>
         </>
     )

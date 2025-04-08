@@ -31,7 +31,7 @@ export const productValidation = (product: {title: string; price: string; descri
     if (!product.description.trim() || product.description.length < 10 || product.description.length > 80) {
         errors.description = 'Product Description must be between 10 to 800 characters!';
     }
-    if (!product.imageURL.trim() || !validateImage) {
+    if (!product.imageURL.trim() || !validateImage.test(product.imageURL)) {
         errors.imageURL = 'Valid Image URL is Required!';
     }
     if (!product.price.trim() || isNaN(Number(product.price))) {

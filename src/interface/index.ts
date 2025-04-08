@@ -11,10 +11,6 @@ export interface Iproduct {
         imageURL: string,
     };
     colors: string[];
-    rating: {
-        rate: string;
-        count: string;
-    };
 }
 
 export interface IformList {

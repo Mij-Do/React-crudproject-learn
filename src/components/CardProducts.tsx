@@ -7,9 +7,11 @@ interface IProps {
     product: Iproduct;
     setEditProduct: (product: Iproduct) => void;
     openEdit: () => void;
+    idx: number;
+    setEditProductIdx: (value: number) => void;
 }
 
-const CardProducts = ({ product, setEditProduct, openEdit }: IProps) => {
+const CardProducts = ({ product, setEditProduct, openEdit, idx, setEditProductIdx }: IProps) => {
         const {colors, description, imageURL, price, title} = product;
 
         const renderColorCircle = colors.map(color => 
@@ -21,6 +23,7 @@ const CardProducts = ({ product, setEditProduct, openEdit }: IProps) => {
             const onEdit = () => {
                 setEditProduct(product);
                 openEdit();
+                setEditProductIdx(idx);
             }
     return (
         <div className="border rounded-md p-2 mx-auto max-w-sm md:max-w-lg md:mx-0 flex flex-col justify-between">
