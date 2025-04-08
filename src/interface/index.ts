@@ -1,3 +1,5 @@
+import { TProduct } from "../Types";
+
 export interface Iproduct {
     id: string | undefined;
     title: string;
@@ -17,7 +19,7 @@ export interface Iproduct {
 
 export interface IformList {
     id: string;
-    name: 'title' | 'price' | 'description' | 'imageURL';
+    name: TProduct;
     label: string;
     type: string;
 }
@@ -31,6 +33,6 @@ export interface ICategory {
 export interface OptionType {
     id: string;
     value: string;
-    label: string;
+    name: string;
     imageURL: string;
 }

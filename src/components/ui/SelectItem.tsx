@@ -81,18 +81,17 @@
 // using react select 
 'use client';
 
-import { useState } from 'react';
+
 import Select from 'react-select';
 import { categories } from '../../data';
 import { OptionType } from '../../interface';
 
-const SelectItem = () => {
-    const [selected, setSelected] = useState<OptionType>({
-        id: categories[0].id,
-        value: categories[0].id, 
-        label: categories[0].name, 
-        imageURL: categories[0].imageURL,
-    });
+interface ISelect {
+    selected: OptionType;
+    setSelected: (category: OptionType) => void
+}
+
+const SelectItem = ({selected, setSelected}: ISelect) => {
 
     const handleChange = (newValue: OptionType) => {
         if (newValue && newValue.id !== selected.id) {
@@ -103,7 +102,7 @@ const SelectItem = () => {
     const options = categories.map((category) => ({
         id: category.id,
         value: category.id,
-        label: category.name,
+        name: category.name,
         imageURL: category.imageURL,
     }));
 
@@ -116,7 +115,7 @@ const SelectItem = () => {
             <div className="flex items-center">
                 <img alt="" src={data.imageURL} className="w-12 h-12 shrink-0 rounded-full" />
                 <span className="ml-3 block truncate font-normal group-hover:font-semibold">
-                    {data.label}
+                    {data.name}
                 </span>
             </div>
             {selected.id === data.id && (
@@ -143,17 +142,17 @@ const SelectItem = () => {
     const customSingleValue = ({ data }: {data: OptionType}) => (
         <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
             <img alt="" src={data.imageURL} className="w-12 h-12 shrink-0 rounded-full" />
-            <span className="block truncate">{data.label}</span>
+            <span className="block truncate">{data.name}</span>
         </span>
     );
-
+    const selectedOption = options.find((option) => option.id === selected.id);
     return (
         <div>
             <label className="block text-sm font-medium text-gray-900">Category</label>
             <div className="relative mt-2">
                 <Select
                     options={options}
-                    value={options.find((option) => option.id === selected.id)}
+                    name={selectedOption ? selectedOption.name : undefined}
                     onChange={(option) => handleChange(option as OptionType)}
                     components={{ Option: customOption, SingleValue: customSingleValue }}
                     className="w-full"
