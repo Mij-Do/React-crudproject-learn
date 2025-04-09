@@ -34,9 +34,10 @@ function App() {
   // states
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  const [openRemove, setOpenRemove] = useState(false);
   const [errors, setErrors] = useState({title: '', price: '', description: '', imageURL: '',});
   const [tempColor, setTempColor] = useState<string[]>([]);
-  const [ products, setProducts] = useState<Iproduct[]>(productsList);
+  const [products, setProducts] = useState<Iproduct[]>(productsList);
   const [product, setProduct] = useState<Iproduct>(defaultProduct);
   const [editProduct, setEditProduct] = useState<Iproduct>(defaultProduct);
   const [editProductIdx, setEditProductIdx] = useState<number>(0);
@@ -52,6 +53,9 @@ function App() {
 
   const openEdit = () => setIsOpenEditModal(true);
   const closeEdit = () => setIsOpenEditModal(false);
+
+  const onRemoveOpen = () => setOpenRemove(true);
+  const onRemoveClose = () => setOpenRemove(false);
   
   const onChangeHandeler = (event: ChangeEvent<HTMLInputElement>) => {
     const {value, name} = event.target;
@@ -114,12 +118,9 @@ function App() {
       setErrors(errors);
       return;
     }
-    
-    console.log(product)
-    console.log(editProduct)
 
     const updateProduct = [...products];
-    updateProduct[editProductIdx] = editProduct;
+    updateProduct[editProductIdx] = {...editProduct, colors: tempColor.concat(editProduct.colors)};
     setProducts(updateProduct);
     
     setEditProduct(defaultProduct);
@@ -133,7 +134,13 @@ function App() {
   }
   // render
   const renderProduct = products.map((product, idx) => 
-    <CardProducts key={product.id} product={product} idx={idx} setEditProduct={setEditProduct} openEdit={openEdit} setEditProductIdx={setEditProductIdx}/>);
+    <CardProducts key={product.id} 
+      product={product} idx={idx} 
+      setEditProduct={setEditProduct} 
+      openEdit={openEdit} 
+      setEditProductIdx={setEditProductIdx}
+      onRemoveOpen={onRemoveOpen}
+    />);
   const renderFormListModal = formInputList.map(input => 
     <div className="flex flex-col text-indigo-500" key={input.id}>
       <label htmlFor={input.id}>{input.label}</label>
@@ -146,6 +153,10 @@ function App() {
                 color={color} 
                 onClick={() => {
                   if (tempColor.includes(color)) {
+                    setTempColor(prev => prev.filter(item => item !== color))
+                    return;
+                  }
+                  if (editProduct.colors.includes(color)) {
                     setTempColor(prev => prev.filter(item => item !== color))
                     return;
                   }
@@ -163,8 +174,22 @@ function App() {
     )
   }
 
+  const renderRemoveProduct = (label: string, description: string) => {
+    return (
+        <>
+          <div className="flex flex-col text-red-500 mb-1">
+            <h2>{label}</h2>
+            <p className="my-2">{description}</p>
+            <div className="flex items-center space-x-2 text-white">
+              <Button width="w-full" className="bg-red-400 hover:bg-red-600">Remove</Button>
+              <Button width="w-full" className="bg-gray-400 hover:bg-gray-500" onClick={onCancel}>Cancel</Button>
+            </div>
+          </div>
+        </>
+    )
+  }
   return (
-      <main className={`${isOpen ? 'opacity-30' : 'opacity-100'} container mx-auto `}>
+      <main className={` container mx-auto `}>
         <Button width="w-full" className="bg-indigo-400 hover:bg-indigo-600 text-white" onClick={open}>
           Add
         </Button>
@@ -181,7 +206,10 @@ function App() {
               {renderColorCircle}
             </div>
             <div className="my-2 flex flex-wrap">
-              {tempColor.map(color => <span key={color} className="text-white rounded-md p-1 ml-1 text-sm" style={{backgroundColor: color}}>{color}</span>)}
+              {tempColor.map(color => 
+              <span key={color} 
+              className="text-white rounded-md p-1 ml-1 text-sm" 
+              style={{backgroundColor: color}}>{color}</span>)}
             </div>
             <div className="my-2"> 
               <SelectItem selected={selected} setSelected={setSelected}/>  
@@ -200,12 +228,28 @@ function App() {
             {renderEditProduct('description', 'description', 'Description')}
             {renderEditProduct('image', 'imageURL', 'ImageURL')}
             {renderEditProduct('price', 'price', 'Price')}
-
+            <div className="my-2"> 
+              <SelectItem selected={editProduct.category} setSelected={value => setEditProduct({...editProduct, category: value})}/>  
+            </div>
+            <div className="my-2 flex flex-wrap">
+              <div className="flex space-x-2 my-2">
+                {renderColorCircle}
+              </div>
+              {tempColor.concat(editProduct.colors).map(color => 
+              <span key={color} 
+              className="text-white rounded-md p-1 ml-1 text-sm cursor-pointer"
+              style={{backgroundColor: color}}>{color}</span>)}
+            </div>
             <div className="flex items-center space-x-2 text-white">
                 <Button width="w-full" className="bg-indigo-400 hover:bg-indigo-600">Submit</Button>
                 <Button width="w-full" className="bg-red-300 hover:bg-red-500" onClick={onCancel}>Cancel</Button>
             </div>
           </form>
+        </Modal>
+
+        {/* onRemove */}
+        <Modal className={'text-red-600'} isOpen={openRemove} closeModal={onRemoveClose} title="Remove Product">
+          {renderRemoveProduct('Remove Product', 'Are you sure you want to remove this product?')}
         </Modal>
       </main>
   )

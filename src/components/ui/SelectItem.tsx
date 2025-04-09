@@ -87,14 +87,14 @@ import { categories } from '../../data';
 import { OptionType } from '../../interface';
 
 interface ISelect {
-    selected: OptionType;
+    selected: {name: string, imageURL: string};
     setSelected: (category: OptionType) => void
 }
 
 const SelectItem = ({selected, setSelected}: ISelect) => {
 
     const handleChange = (newValue: OptionType) => {
-        if (newValue && newValue.id !== selected.id) {
+        if (newValue && newValue.imageURL !== selected.imageURL && newValue.name !== selected.name) {
             setSelected(newValue);
         }
     };
@@ -118,7 +118,7 @@ const SelectItem = ({selected, setSelected}: ISelect) => {
                     {data.name}
                 </span>
             </div>
-            {selected.id === data.id && (
+            {selected.name === data.name && (
                 <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-hover:text-white">
                     <svg
                         className="w-5 h-5"
@@ -145,7 +145,7 @@ const SelectItem = ({selected, setSelected}: ISelect) => {
             <span className="block truncate">{data.name}</span>
         </span>
     );
-    const selectedOption = options.find((option) => option.id === selected.id);
+    const selectedOption = options.find((option) => option.name === selected.name);
     return (
         <div>
             <label className="block text-sm font-medium text-gray-900">Category</label>
