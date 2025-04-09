@@ -11,8 +11,8 @@ import {v4 as uuid} from "uuid";
 import ErrorsMsg  from "./components/ErrorsMsg"
 import CircleColor from "./components/CircleColor"
 import SelectItem from "./components/ui/SelectItem"
-import { TProduct } from "./Types"
-
+import { TProduct } from "./Types";
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   const defaultProduct = {
@@ -126,6 +126,24 @@ function App() {
     setEditProduct(defaultProduct);
     setTempColor([]);
     closeEdit();
+    toast('Product was Update it!', {
+      style: {
+        backgroundColor: '#4f39f6',
+        color: 'white',
+      }
+    });
+  }
+
+  const removeHandeler = () => {
+    const filtered = products.filter(product => product.id !== editProduct.id);
+    setProducts(filtered);
+    onRemoveClose();
+    toast('Product was Remove it!', {
+      style: {
+        backgroundColor: '#fb2c36',
+        color: 'white',
+      }
+    });
   }
 
   const onCancel = () => {
@@ -181,8 +199,8 @@ function App() {
             <h2>{label}</h2>
             <p className="my-2">{description}</p>
             <div className="flex items-center space-x-2 text-white">
-              <Button width="w-full" className="bg-red-400 hover:bg-red-600">Remove</Button>
-              <Button width="w-full" className="bg-gray-400 hover:bg-gray-500" onClick={onCancel}>Cancel</Button>
+              <Button width="w-full" className="bg-red-400 hover:bg-red-600" onClick={removeHandeler}>Remove</Button>
+              <Button width="w-full" className="bg-gray-400 hover:bg-gray-500" onClick={onRemoveClose}>Cancel</Button>
             </div>
           </div>
         </>
@@ -251,6 +269,7 @@ function App() {
         <Modal className={'text-red-600'} isOpen={openRemove} closeModal={onRemoveClose} title="Remove Product">
           {renderRemoveProduct('Remove Product', 'Are you sure you want to remove this product?')}
         </Modal>
+        <Toaster />
       </main>
   )
 }

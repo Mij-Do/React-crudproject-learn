@@ -28,6 +28,7 @@ const CardProducts = ({ product, setEditProduct, openEdit, idx, setEditProductId
             }
 
             const onRemove = () => {
+                setEditProduct(product);
                 onRemoveOpen();
             }
     return (
